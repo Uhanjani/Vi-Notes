@@ -1,5 +1,19 @@
-const BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:5000";
+const getApiUrl = () => {
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
+
+  const { protocol, hostname } = window.location;
+  const codespaceMatch = hostname.match(/^(.+)-\d+\.app\.github\.dev$/);
+
+  if (codespaceMatch) {
+    return `${protocol}//${codespaceMatch[1]}-5000.app.github.dev`;
+  }
+
+  return "http://localhost:5000";
+};
+
+const BASE_URL = getApiUrl();
 
 type AuthData = {
   email: string;
