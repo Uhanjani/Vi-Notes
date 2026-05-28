@@ -1,10 +1,10 @@
 const getApiUrl = () => {
-  if (import.meta.env.VITE_API_URL) {
-    return import.meta.env.VITE_API_URL;
-  }
-
   if (import.meta.env.DEV) {
     return "/api";
+  }
+
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
   }
 
   const { protocol, hostname } = window.location;
