@@ -34,52 +34,7 @@ const Editor = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) navigate("/login");
-  }, []);
-
-
-  useEffect(() => {
-    if (!(window as any).electronAPI) return;
-
-    let lastTime = 0;
-
-    const handler = (_: any, data: any) => {
-      const now = Date.now();
-
-     
-      if (now - lastTime < 50) return;
-      lastTime = now;
-
-      setEvents((prev) => {
-        let updated = [...prev];
-
-        if (lastKeyTime.current !== 0) {
-          const interval = now - lastKeyTime.current;
-          updated.push({ type: "interval", value: interval });
-
-          if (interval > 1000) {
-            updated.push({ type: "pause", duration: interval });
-          }
-        }
-
-        if (data.keycode === 14) {
-          updated.push({ type: "backspace" });
-        }
-
-        lastKeyTime.current = now;
-        keyDownTime.current = now;
-
-        return updated;
-      });
-    };
-
-    (window as any).electronAPI.onKeyEvent(handler);
-
-   
-    return () => {
-   
-    };
-  }, []);
-
+  }, [navigate]);
 
   useEffect(() => {
     if (events.length < 5) return;
@@ -124,7 +79,7 @@ const Editor = () => {
     if (backs > 2) score += 2;
     if (avg > 80 && avg < 400) score += 2;
 
-    let conf = Math.min(Math.max((score + 5) * 10, 0), 100);
+    const conf = Math.min(Math.max((score + 5) * 10, 0), 100);
 
     if (score >= 2) {
       setResult("Human");

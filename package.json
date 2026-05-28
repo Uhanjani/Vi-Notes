@@ -1,15 +1,5 @@
 {
-  "name": "vi-notes-desktop",
+  "name": "vi-notes",
   "version": "1.0.0",
-  "main": "electron/main.js",
-  "scripts": {
-    "electron": "electron ."
-  },
-  "devDependencies": {
-    "electron": "^28.0.0"
-  },
-  "dependencies": {
-    "ihook": "^1.0.3",
-    "uiohook-napi": "^1.5.5"
-  }
+  "private": true
 }

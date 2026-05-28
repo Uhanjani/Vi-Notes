@@ -108,56 +108,6 @@ const WorkspaceView = () => {
     }
   }, [navigate]);
 
-  useEffect(() => {
-    const electronWindow = window as Window & {
-      electronAPI?: {
-        onKeyEvent?: (
-          callback: (_event: unknown, data: { keycode: number }) => void
-        ) => void;
-      };
-    };
-
-    if (!electronWindow.electronAPI?.onKeyEvent) {
-      return;
-    }
-
-    let lastCapturedAt = 0;
-
-    const handler = (_event: unknown, data: { keycode: number }) => {
-      const now = Date.now();
-
-      if (now - lastCapturedAt < 50) {
-        return;
-      }
-
-      lastCapturedAt = now;
-
-      setEvents((previousEvents) => {
-        const updated = [...previousEvents];
-
-        if (lastKeyTime.current !== 0) {
-          const interval = now - lastKeyTime.current;
-          updated.push({ type: "interval", value: interval });
-
-          if (interval > 1000) {
-            updated.push({ type: "pause", duration: interval });
-          }
-        }
-
-        if (data.keycode === 14) {
-          updated.push({ type: "backspace" });
-        }
-
-        lastKeyTime.current = now;
-        keyDownTime.current = now;
-
-        return updated;
-      });
-    };
-
-    electronWindow.electronAPI.onKeyEvent(handler);
-  }, []);
-
   const analysis = useMemo(() => evaluateEvents(events), [events]);
   const wordCount = text.trim() ? text.trim().split(/\s+/).length : 0;
   const characterCount = text.length;
