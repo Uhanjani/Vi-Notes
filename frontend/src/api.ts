@@ -3,6 +3,10 @@ const getApiUrl = () => {
     return import.meta.env.VITE_API_URL;
   }
 
+  if (import.meta.env.DEV) {
+    return "/api";
+  }
+
   const { protocol, hostname } = window.location;
   const codespaceMatch = hostname.match(/^(.+)-\d+\.app\.github\.dev$/);
 
